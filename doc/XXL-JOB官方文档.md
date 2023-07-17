@@ -1,10 +1,10 @@
-## 《分布式任务调度平台XXL-JOB》
+## "Distributed Task Scheduling Platform XXL-JOB"
 
 [![Actions Status](https://github.com/xuxueli/xxl-job/workflows/Java%20CI/badge.svg)](https://github.com/xuxueli/xxl-job/actions)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.xuxueli/xxl-job/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.xuxueli/xxl-job/)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.xuxueli/xxl-job/badge.svg)](https://maven-badges.herokuapp.com/maven -central/com.xuxueli/xxl-job/)
 [![GitHub release](https://img.shields.io/github/release/xuxueli/xxl-job.svg)](https://github.com/xuxueli/xxl-job/releases)
 [![GitHub stars](https://img.shields.io/github/stars/xuxueli/xxl-job)](https://github.com/xuxueli/xxl-job/)
-[![Docker Status](https://img.shields.io/docker/pulls/xuxueli/xxl-job-admin)](https://hub.docker.com/r/xuxueli/xxl-job-admin/)
+[![Docker Status](https://img.shields.io/docker/pulls/xuxueli/xxl-job-admin)](https://hub.docker.com/r/xuxueli/xxl-job-admin /)
 [![License](https://img.shields.io/badge/license-GPLv3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0.html)
 [![donate](https://img.shields.io/badge/%24-donate-ff69b4.svg?style=flat)](https://www.xuxueli.com/page/donate.html)
 
@@ -12,87 +12,87 @@
 
 [TOC]
 
-## 一、简介
+## 1. Introduction
 
-### 1.1 概述
-XXL-JOB是一个分布式任务调度平台，其核心设计目标是开发迅速、学习简单、轻量级、易扩展。现已开放源代码并接入多家公司线上产品线，开箱即用。
+### 1.1 Overview
+XXL-JOB is a distributed task scheduling platform. Its core design goals are rapid development, easy learning, lightweight, and easy expansion. The source code is now open and connected to the online product lines of many companies, out of the box.
 
-### 1.2 社区交流    
-- [社区交流](https://www.xuxueli.com/page/community.html)
+### 1.2 Community Communication
+- [Community Exchange](https://www.xuxueli.com/page/community.html)
 
-### 1.3 特性
-- 1、简单：支持通过Web页面对任务进行CRUD操作，操作简单，一分钟上手；
-- 2、动态：支持动态修改任务状态、启动/停止任务，以及终止运行中任务，即时生效；
-- 3、调度中心HA（中心式）：调度采用中心式设计，“调度中心”自研调度组件并支持集群部署，可保证调度中心HA；
-- 4、执行器HA（分布式）：任务分布式执行，任务"执行器"支持集群部署，可保证任务执行HA；
-- 5、注册中心: 执行器会周期性自动注册任务, 调度中心将会自动发现注册的任务并触发执行。同时，也支持手动录入执行器地址；
-- 6、弹性扩容缩容：一旦有新执行器机器上线或者下线，下次调度时将会重新分配任务；
-- 7、触发策略：提供丰富的任务触发策略，包括：Cron触发、固定间隔触发、固定延时触发、API（事件）触发、人工触发、父子任务触发；
-- 8、调度过期策略：调度中心错过调度时间的补偿处理策略，包括：忽略、立即补偿触发一次等；
-- 9、阻塞处理策略：调度过于密集执行器来不及处理时的处理策略，策略包括：单机串行（默认）、丢弃后续调度、覆盖之前调度；
-- 10、任务超时控制：支持自定义任务超时时间，任务运行超时将会主动中断任务；
-- 11、任务失败重试：支持自定义任务失败重试次数，当任务失败时将会按照预设的失败重试次数主动进行重试；其中分片任务支持分片粒度的失败重试；
-- 12、任务失败告警；默认提供邮件方式失败告警，同时预留扩展接口，可方便的扩展短信、钉钉等告警方式；
-- 13、路由策略：执行器集群部署时提供丰富的路由策略，包括：第一个、最后一个、轮询、随机、一致性HASH、最不经常使用、最近最久未使用、故障转移、忙碌转移等；
-- 14、分片广播任务：执行器集群部署时，任务路由策略选择"分片广播"情况下，一次任务调度将会广播触发集群中所有执行器执行一次任务，可根据分片参数开发分片任务；
-- 15、动态分片：分片广播任务以执行器为维度进行分片，支持动态扩容执行器集群从而动态增加分片数量，协同进行业务处理；在进行大数据量业务操作时可显著提升任务处理能力和速度。
-- 16、故障转移：任务路由策略选择"故障转移"情况下，如果执行器集群中某一台机器故障，将会自动Failover切换到一台正常的执行器发送调度请求。
-- 17、任务进度监控：支持实时监控任务进度；
-- 18、Rolling实时日志：支持在线查看调度结果，并且支持以Rolling方式实时查看执行器输出的完整的执行日志；
-- 19、GLUE：提供Web IDE，支持在线开发任务逻辑代码，动态发布，实时编译生效，省略部署上线的过程。支持30个版本的历史版本回溯。
-- 20、脚本任务：支持以GLUE模式开发和运行脚本任务，包括Shell、Python、NodeJS、PHP、PowerShell等类型脚本;
-- 21、命令行任务：原生提供通用命令行任务Handler（Bean任务，"CommandJobHandler"）；业务方只需要提供命令行即可；
-- 22、任务依赖：支持配置子任务依赖，当父任务执行结束且执行成功后将会主动触发一次子任务的执行, 多个子任务用逗号分隔；
-- 23、一致性：“调度中心”通过DB锁保证集群分布式调度的一致性, 一次任务调度只会触发一次执行；
-- 24、自定义任务参数：支持在线配置调度任务入参，即时生效；
-- 25、调度线程池：调度系统多线程触发调度运行，确保调度精确执行，不被堵塞；
-- 26、数据加密：调度中心和执行器之间的通讯进行数据加密，提升调度信息安全性；
-- 27、邮件报警：任务失败时支持邮件报警，支持配置多邮件地址群发报警邮件；
-- 28、推送maven中央仓库: 将会把最新稳定版推送到maven中央仓库, 方便用户接入和使用;
-- 29、运行报表：支持实时查看运行数据，如任务数量、调度次数、执行器数量等；以及调度报表，如调度日期分布图，调度成功分布图等；
-- 30、全异步：任务调度流程全异步化设计实现，如异步调度、异步运行、异步回调等，有效对密集调度进行流量削峰，理论上支持任意时长任务的运行；
-- 31、跨语言：调度中心与执行器提供语言无关的 RESTful API 服务，第三方任意语言可据此对接调度中心或者实现执行器。除此之外，还提供了 “多任务模式”和“httpJobHandler”等其他跨语言方案；
-- 32、国际化：调度中心支持国际化设置，提供中文、英文两种可选语言，默认为中文；
-- 33、容器化：提供官方docker镜像，并实时更新推送dockerhub，进一步实现产品开箱即用；
-- 34、线程池隔离：调度线程池进行隔离拆分，慢任务自动降级进入"Slow"线程池，避免耗尽调度线程，提高系统稳定性；
-- 35、用户管理：支持在线管理系统用户，存在管理员、普通用户两种角色；
-- 36、权限控制：执行器维度进行权限控制，管理员拥有全量权限，普通用户需要分配执行器权限后才允许相关操作；
+### 1.3 Features
+- 1. Simple: Support CRUD operations on tasks through web pages, easy to operate, and get started in one minute;
+- 2. Dynamic: Supports dynamic modification of task status, start/stop task, and termination of running tasks, which take effect immediately;
+- 3. Dispatch Center HA (Central): The dispatch adopts a central design. The "Dispatch Center" self-develops dispatch components and supports cluster deployment, which can ensure the dispatch center HA;
+- 4. Executor HA (distributed): task distributed execution, task "executor" supports cluster deployment, which can ensure task execution HA;
+- 5. Registration center: The executor will automatically register tasks periodically, and the dispatch center will automatically discover the registered tasks and trigger execution. At the same time, it also supports manual entry of the executor address;
+- 6. Flexible expansion and contraction: Once a new executor machine goes online or offline, tasks will be reassigned in the next scheduling;
+- 7. Trigger strategy: Provide rich task trigger strategies, including: Cron trigger, fixed interval trigger, fixed delay trigger, API (event) trigger, manual trigger, parent-child task trigger;
+- 8. Scheduling expiration strategy: the compensation processing strategy for the dispatch center to miss the dispatch time, including: ignore, immediately compensate and trigger once, etc.;
+- 9. Blocking processing strategy: the processing strategy when the scheduling is too intensive and the executor is too late to process. The strategies include: single-machine serial (default), discarding subsequent scheduling, and overriding previous scheduling;
+- 10. Task timeout control: Support custom task timeout time, task running timeout will actively interrupt the task;
+- 11. Task failure retry: support custom task failure retry times, when the task fails, it will take the initiative to retry according to the preset failure retry times; among them, fragmentation tasks support fragmentation granularity failure retry;
+- 12. Task failure alarm; email failure alarm is provided by default, and an expansion interface is reserved at the same time, which can easily expand SMS, DingTalk and other alarm methods;
+- 13. Routing strategy: Rich routing strategies are provided when the executor cluster is deployed, including: first, last, polling, random, consistent HASH, least frequently used, least recently used, failover, busy transfer wait;
+- 14. Fragmented broadcast task: When the executor cluster is deployed, if the task routing strategy selects "fragmented broadcast", a task schedule will broadcast and trigger all executors in the cluster to execute a task, and the fragmentation can be developed according to the fragmentation parameters Task;
+- 15. Dynamic sharding: shard broadcast tasks are sharded in the dimension of executors, and support dynamic expansion of executor clusters to dynamically increase the number of shards and coordinate business processing; tasks can be significantly improved when performing large-scale business operations processing power and speed.
+- 16. Failover: When the task routing policy selects "Failover", if a machine in the executor cluster fails, it will automatically failover and switch to a normal executor to send scheduling requests.
+- 17. Task progress monitoring: support real-time monitoring of task progress;
+- 18. Rolling real-time log: support online viewing of scheduling results, and support real-time viewing of the complete execution log output by the executor in Rolling mode;
+- 19. GLUE: Provides Web IDE, supports online development of task logic code, dynamic release, real-time compilation and effect, omitting the process of deployment and online. Backtracking of 30 versions of historical versions is supported.
+- 20. Script tasks: support the development and operation of script tasks in GLUE mode, including Shell, Python, NodeJS, PHP, PowerShell and other types of scripts;
+- 21. Command line task: natively provide a general command line task Handler (Bean task, "CommandJobHandler"); the business side only needs to provide the command line;
+- 22. Task dependency: Support configuration of subtask dependencies. When the execution of the parent task is completed and the execution is successful, it will actively trigger the execution of a subtask. Multiple subtasks are separated by commas;
+- 23. Consistency: "Scheduling Center" ensures the consistency of cluster distributed scheduling through DB locks, and a task scheduling will only trigger one execution;
+- 24. Custom task parameters: support online configuration scheduling task input parameters, which take effect immediately;
+- 25. Scheduling thread pool: multi-threaded scheduling system triggers scheduling operation to ensure accurate execution of scheduling without being blocked;
+- 26. Data encryption: The communication between the dispatching center and the actuator is encrypted to improve the security of dispatching information;
+- 27. Email alarm: support email alarm when the task fails, and support the configuration of multiple email addresses to send alarm emails;
+- 28. Push maven central warehouse: the latest stable version will be pushed to maven central warehouse, which is convenient for users to access and use;
+- 29. Operation report: support real-time viewing of operation data, such as the number of tasks, scheduling times, number of executors, etc.; and scheduling reports, such as scheduling date distribution diagram, scheduling success distribution diagram, etc.;
+- 30. Fully asynchronous: The task scheduling process is fully asynchronously designed and implemented, such as asynchronous scheduling, asynchronous operation, asynchronous callback, etc., which can effectively cut traffic peaks for intensive scheduling, and theoretically support the operation of tasks of any duration;
+- 31. Cross-language: The dispatch center and the executor provide language-independent RESTful API services, and any third-party language can connect to the dispatch center or implement the executor. In addition, it also provides other cross-language solutions such as "multitasking mode" and "httpJobHandler";
+- 32. Internationalization: The dispatch center supports internationalization settings, providing two optional languages, Chinese and English, and the default is Chinese;
+- 33. Containerization: provide the official docker image, and update and push dockerhub in real time, further realizing the out-of-the-box use of the product;
+- 34. Thread pool isolation: The scheduling thread pool is isolated and split, and slow tasks are automatically downgraded to the "Slow" thread pool to avoid exhausting scheduling threads and improve system stability;
+- 35. User management: support online management system users, there are two roles of administrator and ordinary user;
+- 36. Permission control: Permission control is performed in the executor dimension, administrators have full permissions, and ordinary users need to be assigned executor permissions before allowing related operations;
 
-### 1.4 发展
-于2015年中，我在github上创建XXL-JOB项目仓库并提交第一个commit，随之进行系统结构设计，UI选型，交互设计……
+### 1.4 Development
+In mid-2015, I created the XXL-JOB project warehouse on github and submitted the first commit, followed by system structure design, UI selection, interaction design...
 
-于2015-11月，XXL-JOB终于RELEASE了第一个大版本V1.0， 随后我将之发布到OSCHINA，XXL-JOB在OSCHINA上获得了@红薯的热门推荐，同期分别达到了OSCHINA的“热门动弹”排行第一和git.oschina的开源软件月热度排行第一，在此特别感谢红薯，感谢大家的关注和支持。
+From 2015 to November, XXL-JOB finally released the first major version V1.0, and then I released it to OSCHINA. XXL-JOB was recommended by @甜蜜 on OSCHINA, and reached OSCHINA’s " "Hot Action" ranks first and git.oschina's open source software ranks first in monthly popularity. Here, I would like to thank Sweet Potato and thank you for your attention and support.
 
-于2015-12月，我将XXL-JOB发表到我司内部知识库，并且得到内部同事认可。
+From December 2015, I published XXL-JOB to our internal knowledge base, which was recognized by internal colleagues.
 
-于2016-01月，我司展开XXL-JOB的内部接入和定制工作，在此感谢袁某和尹某两位同事的贡献，同时也感谢内部其他给与关注与支持的同事。
+In January 2016, our company started the internal access and customization of XXL-JOB. I would like to thank Yuan and Yin for their contributions, and also thank other internal colleagues for their attention and support.
 
-于2017-05-13，在上海举办的 "[第62期开源中国源创会](https://www.oschina.net/event/2236961)" 的 "放码过来" 环节，我登台对XXL-JOB做了演讲，台下五百位在场观众反响热烈（[图文回顾](https://www.oschina.net/question/2686220_2242120) ）。
+On 2017-05-13, in the "62nd Open Source China Source Innovation Conference" (https://www.oschina.net/event/2236961)" held in Shanghai, I took the stage to challenge XXL -JOB gave a speech, and the audience of 500 people responded enthusiastically ([Graphic Review](https://www.oschina.net/question/2686220_2242120) ).
 
-于2017-10-22，又拍云 Open Talk 联合 Spring Cloud 中国社区举办的 "[进击的微服务实战派上海站](https://opentalk.upyun.com/303.html)"，我登台对XXL-JOB做了演讲，现场观众反响热烈并在会后与XXL-JOB用户热烈讨论交流。
+On 2017-10-22, I also participated in the "[Advance Microservice Practical School Shanghai Station] (https://opentalk.upyun.com/303.html)" held by Open Talk and the Spring Cloud Chinese community. XXL-JOB made a speech, the audience responded enthusiastically and discussed and exchanged with XXL-JOB users after the meeting.
 
-于2017-12-11，XXL-JOB有幸参会《[InfoQ ArchSummit全球架构师峰会](http://bj2017.archsummit.com/)》，并被拍拍贷架构总监"杨波老师"在专题 "[微服务原理、基础架构和开源实践](http://bj2017.archsummit.com/training/2)" 中现场介绍。
+On 2017-12-11, XXL-JOB had the honor to participate in "[InfoQ ArchSummit Global Architects Summit] (http://bj2017.archsummit.com/)", and was patted by "Mr. Yang Bo", the architecture director of Paipai Loan, in the topic " [Microservice Principles, Infrastructure and Open Source Practice](http://bj2017.archsummit.com/training/2)" Introduced on site.
 
-于2017-12-18，XXL-JOB参与"[2017年度最受欢迎中国开源软件](http://www.oschina.net/project/top_cn_2017?sort=1)"评比，在当时已录入的约九千个国产开源项目中角逐，最终进入了前30强。
+On 2017-12-18, XXL-JOB participated in the evaluation of "[2017 Most Popular Chinese Open Source Software](http://www.oschina.net/project/top_cn_2017?sort=1)", about Competed among 9,000 domestic open source projects, and finally entered the top 30.
 
-于2018-01-15，XXL-JOB参与"[2017码云最火开源项目](https://www.oschina.net/news/92438/2017-mayun-top-50)"评比，在当时已录入的约六千五百个码云项目中角逐，最终进去了前20强。
+On January 15, 2018, XXL-JOB participated in the evaluation of "[2017 Code Cloud Hottest Open Source Project](https://www.oschina.net/news/92438/2017-mayun-top-50)", which was already Competed in about 6,500 code cloud projects entered, and finally entered the top 20.
 
-于2018-04-14，iTechPlus在上海举办的 "[2018互联网开发者大会](http://www.itdks.com/eventlist/detail/2065)"，我登台对XXL-JOB做了演讲，现场观众反响热烈并在会后与XXL-JOB用户热烈讨论交流。
+On 2018-04-14, iTechPlus held "[2018 Internet Developers Conference](http://www.itdks.com/eventlist/detail/2065)" in Shanghai, I gave a speech to XXL-JOB on the stage. The audience responded enthusiastically and discussed and exchanged with XXL-JOB users after the meeting.
 
-于2018-05-27，在上海举办的 "[第75期开源中国源创会](https://www.oschina.net/event/2278742)" 的 "架构" 主题专场，我登台进行“基础架构与中间件图谱”主题演讲，台下上千位在场观众反响热烈（[图文回顾](https://www.oschina.net/question/3802184_2280606) ）。
+On May 27, 2018, in the "Architecture" theme session of "[The 75th Open Source China Source Creation Conference](https://www.oschina.net/event/2278742)" held in Shanghai, I took the stage to conduct "Basic Architecture and Middleware Graph" keynote speech, thousands of audiences responded enthusiastically ([graphic review](https://www.oschina.net/question/3802184_2280606) ).
 
-于2018-12-05，XXL-JOB参与"[2018年度最受欢迎中国开源软件](https://www.oschina.net/project/top_cn_2018?sort=1)"评比，在当时已录入的一万多个开源项目中角逐，最终排名第19名。
+On 2018-12-05, XXL-JOB participated in the evaluation of "[2018 Most Popular Chinese Open Source Software](https://www.oschina.net/project/top_cn_2018?sort=1)", among the More than 10,000 open source projects competed and finally ranked 19th.
 
-于2019-12-10，XXL-JOB参与"[2019年度最受欢迎中国开源软件](https://www.oschina.net/project/top_cn_2019)"评比，在当时已录入的一万多个开源项目中角逐，最终排名"开发框架和基础组件类"第9名。
+On 2019-12-10, XXL-JOB participated in the "[2019 Most Popular Chinese Open Source Software](https://www.oschina.net/project/top_cn_2019)" evaluation, and more than 10,000 open source software had been entered at that time Competing in the project, and finally ranked 9th in "Development Framework and Basic Components".
 
-于2020-11-16，XXL-JOB参与"[2020年度最受欢迎中国开源软件](https://www.oschina.net/project/top_cn_2020)"评比，在当时已录入的一万多个开源项目中角逐，最终排名"开发框架和基础组件类"第8名。
+On November 16, 2020, XXL-JOB participated in the evaluation of "[The Most Popular Chinese Open Source Software in 2020](https://www.oschina.net/project/top_cn_2020)". Competing in the project, and finally ranked 8th in "Development Framework and Basic Components".
 
-于2021-12-06，XXL-JOB参与"[2021年度OSC中国开源项目评选](https://www.oschina.net/project/top_cn_2021) "评比，在当时已录入的一万多个开源项目中角逐，最终当选"最受欢迎项目"。
+On 2021-12-06, XXL-JOB participated in the "[2021 OSC China Open Source Project Selection](https://www.oschina.net/project/top_cn_2021)" evaluation, and more than 10,000 open source projects had been entered at that time In the competition, it was finally selected as the "Most Popular Project".
 
-> 我司大众点评目前已接入XXL-JOB，内部别名《Ferrari》（Ferrari基于XXL-JOB的V1.1版本定制而成，新接入应用推荐升级最新版本）。
-据最新统计, 自2016-01-21接入至2017-12-01期间，该系统已调度约100万次，表现优异。新接入应用推荐使用最新版本，因为经过数十个版本的更新，系统的任务模型、UI交互模型以及底层调度通讯模型都有了较大的优化和提升，核心功能更加稳定高效。
+> Our company Dianping has now connected to XXL-JOB, and its internal alias is "Ferrari" (Ferrari is customized based on the V1.1 version of XXL-JOB, and it is recommended to upgrade to the latest version for new access applications).
+According to the latest statistics, from 2016-01-21 to 2017-12-01, the system has dispatched about 1 million times, which is an excellent performance. It is recommended to use the latest version for new access applications, because after dozens of version updates, the system's task model, UI interaction model, and underlying scheduling communication model have been greatly optimized and improved, and the core functions are more stable and efficient.
 
-至今，XXL-JOB已接入多家公司的线上产品线，接入场景如电商业务，O2O业务和大数据作业等，截止最新统计时间为止，XXL-JOB已接入的公司包括不限于：
+So far, XXL-JOB has been connected to the online product lines of many companies, and access scenarios such as e-commerce business, O2O business and big data operations, etc. As of the latest statistical time, the companies that XXL-JOB has connected include but are not limited to :
 
 	- 1、大众点评【美团点评】
 	- 2、山东学而网络科技有限公司；
